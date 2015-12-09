@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace BlobRocket.Uploader
 {
-    public class ArgsParser<O> where O : Options, new()
+    public class ArgsParser<O> where O : new()
     {
         private class Spec
         {
