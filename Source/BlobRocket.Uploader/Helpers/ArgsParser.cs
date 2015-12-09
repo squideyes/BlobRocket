@@ -12,7 +12,7 @@ namespace BlobRocket.Uploader
             public PropertyInfo Property { get; set; }
             public Type Type { get; set; }
             public string HelpText { get; set; }
-            public OptionKind Kind{ get; set; }
+            public OptionKind Kind { get; set; }
         }
 
         private Dictionary<string, Spec> specs = new Dictionary<string, Spec>();
@@ -70,36 +70,33 @@ namespace BlobRocket.Uploader
                 {
                     if (!tv.HasValue)
                     {
-                        SetValue(spec.Property, options, true);
+                        SetValue(spec, tv, options, true);
                     }
                     else if (spec.Type.IsEnum)
                     {
                         var value = Enum.Parse(spec.Type, tv.Value, true);
 
-                        SetValue(spec.Property, options, value);
+                        SetValue(spec, tv, options, value);
+                    }
+                    else if (spec.Type.GetInterface(typeof(IConvertible).FullName) != null)
+                    {
+                        var value = Convert.ChangeType(tv.Value, spec.Type);
+
+                        SetValue(spec, tv, options, value);
                     }
                     else
                     {
-                        if (spec.Type.GetInterface(typeof(IConvertible).FullName) != null)
+                        if (spec.Type == typeof(List<string>))
                         {
-                            var value = Convert.ChangeType(tv.Value, spec.Type);
+                            var value = (string)Convert.ChangeType(tv.Value, typeof(string));
 
-                            SetValue(spec.Property, options, value);
+                            var items = value.Split(new char[] { ' ', ',', ';' }).ToList();
+
+                            SetValue(spec, tv, options, items);
                         }
                         else
                         {
-                            if (spec.Type == typeof(List<string>))
-                            {
-                                var value = (string)Convert.ChangeType(tv.Value, typeof(string));
-
-                                var items = value.Split(new char[] { ' ', ',', ';' }).ToList();
-
-                                SetValue(spec.Property, options, items);
-                            }
-                            else
-                            {
-                                //can't assign
-                            }
+                            //can't assign
                         }
                     }
                 }
@@ -112,15 +109,24 @@ namespace BlobRocket.Uploader
             return options;
         }
 
-        private void SetValue(PropertyInfo info, object instance, object value)
+        private bool SetValue(Spec spec, TokenValue tv, object instance, object value)
         {
-            var targetType = info.PropertyType.IsNullableType()
-                 ? Nullable.GetUnderlyingType(info.PropertyType)
-                 : info.PropertyType;
+            try
+            {
+                var targetType = spec.Property.PropertyType.IsNullableType()
+                     ? Nullable.GetUnderlyingType(spec.Property.PropertyType)
+                     : spec.Property.PropertyType;
 
-            var convertedValue = Convert.ChangeType(value, targetType);
+                var convertedValue = Convert.ChangeType(value, targetType);
 
-            info.SetValue(instance, convertedValue, null);
+                spec.Property.SetValue(instance, convertedValue, null);
+
+                return true;
+            }
+            catch (Exception error)
+            {
+                return false;
+            }
         }
 
         private List<string> GetChunks(string[] args)

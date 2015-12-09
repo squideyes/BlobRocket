@@ -11,7 +11,6 @@ namespace BlobRocket.Uploader
             var commands = new string[] {
                 @"-s:c:\Data",
                 "-?" ,
-                "-h" ,
                 "-@:xxxx.xml" ,
                 "-p:*.csv",
                 "-c:LowerCase",
