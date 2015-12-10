@@ -23,9 +23,9 @@ namespace BlobRocket.Uploader
                 "-x:lsb@bitmaven.com louis@bitmaven.com"
             };
 
-            var parser = new ArgsParser<Options>();
+            //var parser = new ArgsParser<Options>();
 
-            parser.Parse(commands);
+            //parser.Parse(commands);
         }
     }
 }

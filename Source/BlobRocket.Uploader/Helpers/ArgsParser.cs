@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 
 namespace BlobRocket.Uploader
@@ -15,133 +15,73 @@ namespace BlobRocket.Uploader
             public OptionKind Kind { get; set; }
         }
 
+        private Dictionary<string, Spec> specs = new Dictionary<string, Spec>();
+
         public ArgsParser()
         {
+            //var options = new O();
+
+            //foreach (var property in typeof(O).
+            //    GetProperties(BindingFlags.Instance | BindingFlags.Public))
+            //{
+            //    var attrib = property.GetCustomAttribute<OptionAttribute>();
+
+            //    if (attrib == null)
+            //        continue;
+
+            //    if (attrib.Key == null)
+            //        throw new ArgumentNullException(nameof(attrib.Key));
+
+            //    if (attrib.Alias == null)
+            //        throw new ArgumentNullException(nameof(attrib.Alias));
+
+            //    var key = attrib.Key.ToLower();
+
+            //    var alias = attrib.Alias.ToLower();
+
+            //    var spec = new Spec()
+            //    {
+            //        Property = property,
+            //        Type = property.PropertyType,
+            //        HelpText = attrib.HelpText,
+            //        Kind = attrib.Kind
+            //    };
+
+            //    specs.Add(key, spec);
+
+            //    specs.Add(alias, spec);
+            //}
         }
 
-        public O Parse(string[] args)
+        public void Setup<R>(Expression<Func<O, R>> property, 
+            char key, string alias, OptionKind kind, string helpText)
         {
-            var specs = new Dictionary<string, Spec>();
+            // validate
 
-            var options = new O();
+            var p = GetProperty(property);
 
-            var properties = typeof(O).GetProperties(BindingFlags.Instance | BindingFlags.Public);
-
-            foreach (var property in typeof(O).
-                GetProperties(BindingFlags.Instance | BindingFlags.Public))
+            var spec = new Spec()
             {
-                var attrib = property.GetCustomAttribute<OptionAttribute>();
+                Property = p,
+                Type = p.PropertyType,
+                Kind = kind,
+                HelpText = helpText
+            };
 
-                if (attrib == null)
-                    continue;
-
-                if (attrib.Key == null)
-                    throw new ArgumentNullException(nameof(attrib.Key));
-
-                if (attrib.Alias == null)
-                    throw new ArgumentNullException(nameof(attrib.Alias));
-
-                var key = attrib.Key.ToLower();
-                var alias = attrib.Alias.ToLower();
-
-                var spec = new Spec()
-                {
-                    Property = property,
-                    Type = property.PropertyType,
-                    HelpText = attrib.HelpText,
-                    Kind = attrib.Kind
-                };
-
-                specs.Add(key, spec);
-                specs.Add(alias, spec);
-            }
-
-            foreach (var chunk in GetChunks(args))
-            {
-                var tv = new TokenValue(chunk.Substring(1));
-
-                Spec spec;
-
-                if (specs.TryGetValue(tv.Token, out spec))
-                {
-                    if (!tv.HasValue)
-                    {
-                        SetValue(options, spec, tv, options, true);
-                    }
-                    else if (spec.Type.IsEnum)
-                    {
-                        var value = Enum.Parse(spec.Type, tv.Value, true);
-
-                        SetValue(options, spec, tv, options, value);
-                    }
-                    else if (typeof(IConvertible).IsAssignableFrom(spec.Type))
-                    {
-                        var value = Convert.ChangeType(tv.Value, spec.Type);
-
-                        SetValue(options, spec, tv, options, value);
-                    }
-                    else if (spec.Type == typeof(List<string>))
-                    {
-                        var value = (string)Convert.ChangeType(tv.Value, typeof(string));
-
-                        var items = value.Split(new char[] { ' ', ',', ';' }).ToList();
-
-                        SetValue(options, spec, tv, options, items);
-                    }
-                    else
-                    {
-                        options.Errors.Add(new ParseError(tv,
-                            "The {0} argument could not be parsed!", spec.Type));
-                    }
-                }
-            }
-
-            return options;
+            specs.Add(key.ToString(), spec);
+            specs.Add(alias, spec);
         }
 
-        private void SetValue(O options, Spec spec, TokenValue tv, object instance, object value)
+        private PropertyInfo GetProperty<R>(Expression<Func<O, R>> expression)
         {
-            try
-            {
-                var targetType = spec.Property.PropertyType.IsNullableType()
-                     ? Nullable.GetUnderlyingType(spec.Property.PropertyType)
-                     : spec.Property.PropertyType;
+            MemberExpression me = null;
 
-                var convertedValue = Convert.ChangeType(value, targetType);
+            if (expression.Body is MemberExpression)
+                me = (MemberExpression)expression.Body;
+            else
+                throw new ArgumentException();
 
-                spec.Property.SetValue(instance, convertedValue, null);
-            }
-            catch (Exception error)
-            {
-                options.Errors.Add(new ParseError(tv, error.Message));
-            }
-        }
-
-        private List<string> GetChunks(string[] args)
-        {
-            var cmd = (" " + string.Join(" ", args)).Replace(" /", " -").Trim();
-
-            var chunks = new List<string>();
-
-            while (cmd.Length > 0)
-            {
-                var index = cmd.IndexOf(" -");
-
-                if (index == -1)
-                {
-                    chunks.Add(cmd);
-
-                    cmd = "";
-                }
-                else
-                {
-                    chunks.Add(cmd.Substring(0, index));
-
-                    cmd = cmd.Remove(0, index + 1);
-                }
-            }
-
-            return chunks;
+            return (PropertyInfo)me.Member;
         }
     }
 }

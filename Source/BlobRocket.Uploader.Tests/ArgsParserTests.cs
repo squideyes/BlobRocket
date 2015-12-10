@@ -37,9 +37,7 @@ namespace BlobRocket.Uploader.Tests
         {
             var parser = new ArgsParser<Options>();
 
-            var args = GetArgs(@"-s:c:\data");
-
-            var options = parser.Parse(args);
+            parser.Setup(o => o.SomeString, 's', "somstring", OptionKind.RequiredKeyValue, "");
         }
     }
 }
