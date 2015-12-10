@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace BlobRocket.Uploader
 {
-    public class ArgsParser<O> where O : new()
+    public class ArgsParser<O> where O : OptionsBase, new()
     {
         private class Spec
         {
@@ -15,14 +15,14 @@ namespace BlobRocket.Uploader
             public OptionKind Kind { get; set; }
         }
 
-        private Dictionary<string, Spec> specs = new Dictionary<string, Spec>();
-
         public ArgsParser()
         {
         }
 
         public O Parse(string[] args)
         {
+            var specs = new Dictionary<string, Spec>();
+
             var options = new O();
 
             var properties = typeof(O).GetProperties(BindingFlags.Instance | BindingFlags.Public);
@@ -41,8 +41,6 @@ namespace BlobRocket.Uploader
                 if (attrib.Alias == null)
                     throw new ArgumentNullException(nameof(attrib.Alias));
 
-                // validate type
-
                 var key = attrib.Key.ToLower();
                 var alias = attrib.Alias.ToLower();
 
@@ -58,9 +56,7 @@ namespace BlobRocket.Uploader
                 specs.Add(alias, spec);
             }
 
-            var chunks = GetChunks(args);
-
-            foreach (var chunk in chunks)
+            foreach (var chunk in GetChunks(args))
             {
                 var tv = new TokenValue(chunk.Substring(1));
 
@@ -70,46 +66,40 @@ namespace BlobRocket.Uploader
                 {
                     if (!tv.HasValue)
                     {
-                        SetValue(spec, tv, options, true);
+                        SetValue(options, spec, tv, options, true);
                     }
                     else if (spec.Type.IsEnum)
                     {
                         var value = Enum.Parse(spec.Type, tv.Value, true);
 
-                        SetValue(spec, tv, options, value);
+                        SetValue(options, spec, tv, options, value);
                     }
-                    else if (spec.Type.GetInterface(typeof(IConvertible).FullName) != null)
+                    else if (typeof(IConvertible).IsAssignableFrom(spec.Type))
                     {
                         var value = Convert.ChangeType(tv.Value, spec.Type);
 
-                        SetValue(spec, tv, options, value);
+                        SetValue(options, spec, tv, options, value);
+                    }
+                    else if (spec.Type == typeof(List<string>))
+                    {
+                        var value = (string)Convert.ChangeType(tv.Value, typeof(string));
+
+                        var items = value.Split(new char[] { ' ', ',', ';' }).ToList();
+
+                        SetValue(options, spec, tv, options, items);
                     }
                     else
                     {
-                        if (spec.Type == typeof(List<string>))
-                        {
-                            var value = (string)Convert.ChangeType(tv.Value, typeof(string));
-
-                            var items = value.Split(new char[] { ' ', ',', ';' }).ToList();
-
-                            SetValue(spec, tv, options, items);
-                        }
-                        else
-                        {
-                            //can't assign
-                        }
+                        options.Errors.Add(new ParseError(tv,
+                            "The {0} argument could not be parsed!", spec.Type));
                     }
-                }
-                else
-                {
-                    // add not found 
                 }
             }
 
             return options;
         }
 
-        private bool SetValue(Spec spec, TokenValue tv, object instance, object value)
+        private void SetValue(O options, Spec spec, TokenValue tv, object instance, object value)
         {
             try
             {
@@ -120,20 +110,15 @@ namespace BlobRocket.Uploader
                 var convertedValue = Convert.ChangeType(value, targetType);
 
                 spec.Property.SetValue(instance, convertedValue, null);
-
-                return true;
             }
             catch (Exception error)
             {
-                return false;
+                options.Errors.Add(new ParseError(tv, error.Message));
             }
         }
 
         private List<string> GetChunks(string[] args)
         {
-            //handle malformed  args with no dash to start
-
-            //use regex!!!!!!!!!!!!!!!!!
             var cmd = (" " + string.Join(" ", args)).Replace(" /", " -").Trim();
 
             var chunks = new List<string>();

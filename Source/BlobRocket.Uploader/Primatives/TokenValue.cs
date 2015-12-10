@@ -1,6 +1,6 @@
 ﻿namespace BlobRocket.Uploader
 {
-    internal class TokenValue
+    public class TokenValue
     {
         public TokenValue(string chunk)
         {

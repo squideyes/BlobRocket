@@ -1,0 +1,153 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="OptionAccessKey" xml:space="preserve">
+    <value>Specifies the pre-defined Azure Storage account access key.</value>
+  </data>
+  <data name="OptionAccount" xml:space="preserve">
+    <value>Specifies the Azure Storage account name.  Storage account names must be between 3 and 24 characters in length, may contain numbers and lowercase letters only and must match the name of an existing storage account within Azure.</value>
+  </data>
+  <data name="OptionAlertsTo" xml:space="preserve">
+    <value>Specifies one or more comma-separated email accounts to send status reports to.</value>
+  </data>
+  <data name="OptionCasing" xml:space="preserve">
+    <value>Specifies the file-name casing (Normal, LowerCase, or UpperCase).</value>
+  </data>
+  <data name="OptionHandling" xml:space="preserve">
+    <value>Specifies the file handling mode (Sync or Overwrite).</value>
+  </data>
+  <data name="OptionLogFolder" xml:space="preserve">
+    <value>Specifies the file system directory to persist log files to.  If the directory doesn't exist it will be created.  A new log file will be created for each BlobRocket.Uploader run and have a unique and standard name (i.e. BlobRocket_20151224_123117999.log).</value>
+  </data>
+  <data name="OptionParamFile" xml:space="preserve">
+    <value>Specifies a file that contains parameters.  BlobRocket.Uploader processes the parameters in the file just as if they had been specified on the command line.  In a response file, you can either specify multiple parameters on a single line, or specify each parameter on its own line. Note that an individual parameter cannot span multiple lines.  Response files can include comments lines that begin with the # symbol.  You can specify multiple response files. However, note that BlobRocket.Uploader does not support nested response files.</value>
+  </data>
+  <data name="OptionPattern" xml:space="preserve">
+    <value>Specifies a file pattern that indicates which files to copy. The file pattern provided is matched against files within the directory specified by the -S option. BlobRocket.Uploader also matches the specified pattern against all files in any subfolders beneath the directory.  BlobRocket.Uploader uses uses case-insensitive matching in all cases. The default file pattern used when no file pattern is specified is \"*.*\". Specifying multiple file patterns is not supported.</value>
+  </data>
+  <data name="OptionSource" xml:space="preserve">
+    <value>Specifies the file system directory from which to copy files from.  The directory must exist.</value>
+  </data>
+  <data name="OptionTarget" xml:space="preserve">
+    <value>Specifies the container to copy the files to.  If the container doesn't already exist, it will be created.  Container names must start with a letter or number, and can contain only letters, numbers, and the dash (-) character.  Every dash (-) character must be immediately preceded and followed by a letter or number; consecutive dashes are not permitted in container names.  All letters in a container name must be lowercase.  Container names must be from 3 through 63 characters long.</value>
+  </data>
+  <data name="OptionVerbose" xml:space="preserve">
+    <value>Prints all messages to Standard Output.</value>
+  </data>
+</root>
