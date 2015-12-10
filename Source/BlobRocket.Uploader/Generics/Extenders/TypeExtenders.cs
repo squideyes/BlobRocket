@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BlobRocket.Uploader
+namespace BlobRocket.Uploader.Generics
 {
     public static class TypeExtenders
     {

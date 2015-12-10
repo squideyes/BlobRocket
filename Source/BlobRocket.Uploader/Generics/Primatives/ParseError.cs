@@ -1,4 +1,4 @@
-﻿namespace BlobRocket.Uploader
+﻿namespace BlobRocket.Uploader.Generics
 {
     public class ParseError
     {

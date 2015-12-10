@@ -2,7 +2,7 @@
 using System.Reflection;
 using System.Text;
 
-namespace BlobRocket.Uploader
+namespace BlobRocket.Uploader.Generics
 {
     public class AppInfo
     {

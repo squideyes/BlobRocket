@@ -37,7 +37,8 @@ namespace BlobRocket.Uploader.Tests
         {
             var parser = new ArgsParser<Options>();
 
-            parser.Setup(o => o.SomeString, 's', "somstring", OptionKind.RequiredKeyValue, "");
+            parser.Setup(o => o.SomeString, 's', "somestring",
+                OptionKind.RequiredKeyValue, "", value => true);
         }
     }
 }

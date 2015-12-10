@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
-namespace BlobRocket.Uploader
+namespace BlobRocket.Uploader.Generics
 {
     public static partial class Extenders
     {

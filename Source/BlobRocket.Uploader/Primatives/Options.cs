@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using BlobRocket.Uploader.Generics;
+using System.Collections.Generic;
 
 namespace BlobRocket.Uploader
 {

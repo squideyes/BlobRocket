@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace BlobRocket.Uploader
+namespace BlobRocket.Uploader.Generics
 {
     public static class StringExtenders
     {
